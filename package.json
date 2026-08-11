@@ -16,6 +16,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --env-file.env -- watch src/app"
+    "dev": "node --env-file=.env --watch src/app"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
