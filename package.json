@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/cordobaesteban77/2026-catalogo-ventas-backend#readme",
+  "bugs": {
+    "url": "https://github.com/cordobaesteban77/2026-catalogo-ventas-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cordobaesteban77/2026-catalogo-ventas-backend.git"
+  },
+  "license": "ISC",
+  "author": "Esteban Córdoba",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --env-file.env -- watch src/app"
+  }
+}
