@@ -39,4 +39,11 @@ const updateProduct = async (req, res) => {
     res.status(200).json({ ok: true, message: "Producto actualizado con éxito" });
 };
 
-export { getProducts, createProduct, updateProduct }
+// desactivar producto
+const disableProduct = async (req, res) => {
+    const { id } = req.params;
+    await Product.findByIdAndUpdate(id, { state: false });
+    res.status(200).json({ ok: true, message: "Producto desactivado" })
+};
+
+export { getProducts, createProduct, updateProduct, disableProduct }
