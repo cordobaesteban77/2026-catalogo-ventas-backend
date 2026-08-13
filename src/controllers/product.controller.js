@@ -25,4 +25,18 @@ const createProduct = async (req, res) => {
     res.status(201).json({ ok:true, message: `El producto ${data.name} se guardó correctamente` })
 };
 
-export { getProducts, createProduct }
+// actualizar producto
+const updateProduct = async (req, res) => {
+    const { id } = req.params;
+    const { price, description, stock } = req.body;
+    // cuerpo que le mando a mongoose para que actualice la DB
+    let data = { price, description, stock };
+    if (req.body.name) {
+        // le agrego al objeto data la propiedad name
+        data.name = req.body.name.toUpperCase();
+    }
+    await Product.findByIdAndUpdate(id, data);
+    res.status(200).json({ ok: true, message: "Producto actualizado con éxito" });
+};
+
+export { getProducts, createProduct, updateProduct }
