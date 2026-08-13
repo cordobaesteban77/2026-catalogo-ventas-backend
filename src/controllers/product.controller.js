@@ -51,11 +51,13 @@ const updateProduct = async (req, res) => {
 };
 
 // desactivar producto
-const disableProduct = async (req, res) => {
+const changeStateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        await Product.findByIdAndUpdate(id, { state: false });
-        res.status(200).json({ ok: true, message: "Producto desactivado" });
+        const productChangeState = await Product.findById(id);
+        productChangeState.state = !productChangeState.state;
+        await productChangeState.save()
+        res.status(200).json({ ok: true, message: "Estado del producto actualizado" });
     } catch (error) {
         console.error(error);
         return res.status(500),json({ ok: false, error: error.message });
@@ -74,4 +76,4 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-export { getProducts, createProduct, updateProduct, disableProduct, deleteProduct };
+export { getProducts, createProduct, updateProduct, changeStateProduct, deleteProduct };
