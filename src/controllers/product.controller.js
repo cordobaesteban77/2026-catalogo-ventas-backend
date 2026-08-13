@@ -43,7 +43,18 @@ const updateProduct = async (req, res) => {
 const disableProduct = async (req, res) => {
     const { id } = req.params;
     await Product.findByIdAndUpdate(id, { state: false });
-    res.status(200).json({ ok: true, message: "Producto desactivado" })
+    res.status(200).json({ ok: true, message: "Producto desactivado" });
 };
 
-export { getProducts, createProduct, updateProduct, disableProduct }
+// eliminar producto
+const deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Product.findByIdAndDelete(id);
+        res.status(200).json({ ok: true, message: "Producto eliminado con éxito" });
+    } catch (error) {
+        return res.status(500),json({ ok: false, error: error.message });
+    }
+};
+
+export { getProducts, createProduct, updateProduct, disableProduct, deleteProduct };
