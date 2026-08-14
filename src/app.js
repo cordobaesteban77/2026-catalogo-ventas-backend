@@ -1,4 +1,6 @@
 import express from 'express';
+import { dbConnect } from './config/db.js';
+import productRoutes from "./routes/product.routes.js"
 
 const app = express();
 const PORT = process.env.PORT || 4500;
@@ -8,8 +10,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // rutas
-app.get("/", (req, res) => {
-    res.status(200).json({ message: "Peticioón GET" })
-})
+app.use("/api/products", productRoutes);
 
-app.listen(PORT, () => console.log(`✅Server online on port: ${PORT}`));
+//Conexíon a base de datos
+await dbConnect();
+
+app.listen(PORT, () => console.log(`✅ Server online on port: ${PORT}`));
