@@ -1,6 +1,7 @@
 import express from 'express';
 import { dbConnect } from './config/db.js';
-import productRoutes from "./routes/product.routes.js"
+import productRoutes from "./routes/product.routes.js";
+import categoriesRoutes from "./routes/category.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 4500;
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // rutas
 app.use("/api/products", productRoutes);
+app.use("/api/categories", categoriesRoutes);
 
 //Conexíon a base de datos
 await dbConnect();
