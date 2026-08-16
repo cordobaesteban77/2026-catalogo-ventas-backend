@@ -1,5 +1,6 @@
 import express from 'express';
 import { dbConnect } from './config/db.js';
+import morgan from 'morgan';
 import productRoutes from "./routes/product.routes.js";
 import categoriesRoutes from "./routes/category.routes.js";
 
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 4500;
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'));
 
 // rutas
 app.use("/api/products", productRoutes);
