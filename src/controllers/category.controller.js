@@ -48,4 +48,18 @@ const updateCategory = async (req, res) => {
     }
 };
 
-export { getCategory, createCategory, updateCategory };
+// desactivar categoria (NO BORRAR)
+const changeCategoryState = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const categoryChangeState = await Category.findByIdAndUpdate(id, { new: true });
+        categoryChangeState.state = !categoryChangeState.state;
+        await categoryChangeState.save();
+        res.status(200).json({ ok: true, message: "Estado de la categoria actualizado" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ ok: false, error: error.message });
+    }
+};
+
+export { getCategory, createCategory, updateCategory, changeCategoryState };
