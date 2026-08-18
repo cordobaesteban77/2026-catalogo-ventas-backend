@@ -62,4 +62,16 @@ const changeCategoryState = async (req, res) => {
     }
 };
 
-export { getCategory, createCategory, updateCategory, changeCategoryState };
+// borrar categoria
+const deleteCategory = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Category.findByIdAndDelete(id);
+        res.status(200).json({ ok: true, message: "Categoria eliminado con éxito" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500),json({ ok: false, error: error.message });
+    }
+};
+
+export { getCategory, createCategory, updateCategory, changeCategoryState, deleteCategory };
