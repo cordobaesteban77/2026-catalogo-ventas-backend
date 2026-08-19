@@ -37,13 +37,21 @@ const UserSchema = new mongoose.Schema({
 { timestamps: true });
 
 // hash password
-UserSchema.pre('save', async function(){
+UserSchema.pre('save', async function() {
     if (!this.isModified("password")) {
         return
     }
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
 });
+
+// generar codigo de verificacion
+UserSchema.methods.generateVerificationCode = function() {
+    const code = Math.floor(100000 + Math.random() * 900000).toString(); // codigo de 6 digitos
+    this.verificationCode = code;
+    this.verificationCodeExpires = Date.now() + 15 * 60 * 1000; // duracion del codigo 15 min
+    return code;
+};
 
 const User = mongoose.model("User", UserSchema);
 
