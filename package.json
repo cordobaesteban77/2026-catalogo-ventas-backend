@@ -19,6 +19,7 @@
     "dev": "node --env-file=.env --watch src/app"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "express": "^5.2.1",
     "mongoose": "^9.9.2",
     "morgan": "^1.11.0"
