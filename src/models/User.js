@@ -53,6 +53,11 @@ UserSchema.methods.generateVerificationCode = function() {
     return code;
 };
 
+// comparar contraseñas
+UserSchema.methods.comparePassword = function(userPassword) {
+    return bcrypt.compareSync(userPassword, this.password); // devuelve un booleano
+};
+
 const User = mongoose.model("User", UserSchema);
 
 export default User;
