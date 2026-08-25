@@ -10,6 +10,11 @@ const ProductSchema = Schema({
         type: Boolean,
         default: true
     },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
     price: {
         type: Number,
         default: 0
