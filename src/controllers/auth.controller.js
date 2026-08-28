@@ -17,7 +17,7 @@ const register = async (req, res) => {
             console.error("Error al enviar el email", error);
         }
         // envio respuesta al cliente
-        res.status(201).json({ ok: true, message: "Usuario creado con éxito", data: { username: user.username, email: user.email } });
+        res.status(201).json({ ok: true, message: "Usuario creado con éxito, por favor ahora revise su correo y verifique su usuario", data: { username: user.username, email: user.email } });
 
     } catch (error) {
         console.log(error);
