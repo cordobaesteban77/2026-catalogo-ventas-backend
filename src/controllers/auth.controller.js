@@ -2,6 +2,16 @@ import User from "../models/User.js";
 import { sendVerificationEmail } from "../config/nodemailer.js";
 import { generateToken } from "../utils/jwt.js";
 
+// obtener el perfil del usuario
+const getProfile = async (req, res) => {
+    try {
+        const { username, email, role, emailVerified } = req.user;
+        res.json({ success: true, data: { username, email, role, emailVerified } });
+    } catch (error) {
+        return res.status(500).json({ ok: false, error: error.message });
+    }
+};
+
 // registrar usuario
 const register = async (req, res) => {
     try {
@@ -111,4 +121,4 @@ const logout = (req, res) => {
     }
 };
 
-export { register, verifyEmail, login, logout };
+export { register, verifyEmail, login, logout, getProfile };
