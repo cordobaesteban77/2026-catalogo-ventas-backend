@@ -58,4 +58,38 @@ const verifyEmail = async (req, res) => {
     }
 };
 
-export { register, verifyEmail };
+// login
+const  login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email }).select('+password');
+        if(!user) {
+            return res.status(401).json({ ok: false, message: "Correo o contraseña incorrectos" });
+        }
+        // chequear que la password coincida
+        const isPasswordValid = user.comparePassword(password);
+        if(!isPasswordValid) {
+            return res.status(403).json({ ok: false, message: "Correo o contraseña incorrectos" });
+        }
+        // chequear si tiene el código verificado
+        if(!user.emailVerified) {
+            return res.status(403).json({ ok: false, message: "Por favor verifique su email para poder acceder" });
+        }
+        // generar el token
+        const token = generateToken(user._id);
+        // setear la cookie
+        const cookieOptions = {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax',
+            maxAge: 60 * 60 * 1000 // 1h
+        };
+        res.cookie('token', token, cookieOptions);
+        res.status(200).json({ ok: true, message: "Usuario logueado con éxito!" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ ok: false, error:error.message });
+    }
+};
+
+export { register, verifyEmail, login };
