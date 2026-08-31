@@ -92,4 +92,23 @@ const  login = async (req, res) => {
     }
 };
 
-export { register, verifyEmail, login };
+// logout
+const logout = (req, res) => {
+    try {
+        // chequear que exista el token: se puede hacer tambien agregando el middleware authenticate entre la ruta y el controlador
+        if(req.cookies.token) {
+            // limpiar la cookie llamada token
+            res.clearCookie("token", {
+                httpOnly: true,
+                secure: true,
+                sameSite: "lax"
+            })
+            return res.status(200).json({ ok: true, message: "Sesión cerrada con éxito" });
+        }
+        return res.status(401).json({ ok: false, message: "No hay un usuario logueado" });
+    } catch (error) {
+        return res.status(500).json({ ok: false, error:error.message });
+    }
+};
+
+export { register, verifyEmail, login, logout };

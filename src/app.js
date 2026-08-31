@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import productRoutes from "./routes/product.routes.js";
 import categoriesRoutes from "./routes/category.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const PORT = process.env.PORT || 4500;
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 4500;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use(cookieParser());
 
 // rutas
 app.use("/api/products", productRoutes);
