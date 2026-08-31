@@ -9,6 +9,10 @@ const CategorySchema = Schema({
     state: {
         type: Boolean,
         default: true
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }
 });
 
