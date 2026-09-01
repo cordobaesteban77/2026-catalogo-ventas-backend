@@ -14,14 +14,14 @@ const getProducts = async (req, res) => {
 // crear producto
 const createProduct = async (req, res) => {
     try {
-        const { price, description, img } = req.body;
+        const { price, description, category, img } = req.body;
         const name = req.body.name.toUpperCase();
         // validacion si existe un producto con ese nombre
         const productDB = await Product.findOne({ name });
         if (productDB) {
             return res.status(400).json({ ok: true, message: `El producto con el nombre ${productDB.name} ya existe` });
         }
-        const data = { name, price, description };
+        const data = { name, price, description, category };
         const product = new Product(data);
         await product.save();
         res.status(201).json({ ok:true, message: `El producto ${data.name} se guardó correctamente` })
