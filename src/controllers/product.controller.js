@@ -3,7 +3,7 @@ import Product from "../models/Product.js";
 // obtener productos
 const getProducts = async (req, res) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find().populate("category", "name");
         res.status(200).json({ ok: true, products });
     } catch (error) {
         console.error(error);
@@ -14,7 +14,7 @@ const getProducts = async (req, res) => {
 // obtener productos activos
 const getActiveProducts = async (req, res) => {
     try {
-        const products = await Product.find({ state: true }).populate("user", "username email role");
+        const products = await Product.find({ state: true }).populate("category", "name").populate("user", "username email role");
         res.status(200).json({ ok: true, products });
     } catch (error) {
         console.error(error);
@@ -25,7 +25,7 @@ const getActiveProducts = async (req, res) => {
 // obtener productos desactivados
 const getDisableProducts = async (req, res) => {
     try {
-        const products = await Product.find({ state: false }).populate("user", "username email role");
+        const products = await Product.find({ state: false }).populate("category", "name").populate("user", "username email role");
         res.status(200).json({ ok: true, products });
     } catch (error) {
         console.error(error);
