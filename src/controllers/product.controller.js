@@ -7,7 +7,7 @@ const getProducts = async (req, res) => {
         res.status(200).json({ ok: true, products });
     } catch (error) {
         console.error(error);
-        return res.status(500),json({ ok: false, error: error.message });
+        return res.status(500).json({ ok: false, error: error.message });
     }
 };
 
@@ -21,13 +21,13 @@ const createProduct = async (req, res) => {
         if (productDB) {
             return res.status(400).json({ ok: true, message: `El producto con el nombre ${productDB.name} ya existe` });
         }
-        const data = { name, price, description, category };
+        const data = { name, price, description, category, user: req.user._id };
         const product = new Product(data);
         await product.save();
         res.status(201).json({ ok:true, message: `El producto ${data.name} se guardó correctamente` })
     } catch (error) {
         console.error(error);
-        return res.status(500),json({ ok: false, error: error.message });
+        return res.status(500).json({ ok: false, error: error.message });
     }
 };
 
@@ -46,7 +46,7 @@ const updateProduct = async (req, res) => {
         res.status(200).json({ ok: true, message: "Producto actualizado con éxito" });
     } catch (error) {
         console.error(error);
-        return res.status(500),json({ ok: false, error: error.message });
+        return res.status(500).json({ ok: false, error: error.message });
     }
 };
 
@@ -60,7 +60,7 @@ const changeStateProduct = async (req, res) => {
         res.status(200).json({ ok: true, message: "Estado del producto actualizado" });
     } catch (error) {
         console.error(error);
-        return res.status(500),json({ ok: false, error: error.message });
+        return res.status(500).json({ ok: false, error: error.message });
     }
 };
 
@@ -72,7 +72,7 @@ const deleteProduct = async (req, res) => {
         res.status(200).json({ ok: true, message: "Producto eliminado con éxito" });
     } catch (error) {
         console.error(error);
-        return res.status(500),json({ ok: false, error: error.message });
+        return res.status(500).json({ ok: false, error: error.message });
     }
 };
 
