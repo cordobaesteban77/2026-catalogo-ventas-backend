@@ -11,6 +11,17 @@ const getProducts = async (req, res) => {
     }
 };
 
+// obtener productos
+const getActiveProducts = async (req, res) => {
+    try {
+        const products = await Product.find({ state: true }).populate("user", "username email role");
+        res.status(200).json({ ok: true, products });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ ok: false, error: error.message });
+    }
+};
+
 // crear producto
 const createProduct = async (req, res) => {
     try {
@@ -76,4 +87,4 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-export { getProducts, createProduct, updateProduct, changeStateProduct, deleteProduct };
+export { getProducts, getActiveProducts, createProduct, updateProduct, changeStateProduct, deleteProduct };
