@@ -35,9 +35,9 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { price, description, stock } = req.body;
+        const { price, category, description, stock } = req.body;
         // cuerpo que le mando a mongoose para que actualice la DB
-        let data = { price, description, stock };
+        let data = { price, category, description, stock };
         if (req.body.name) {
             // le agrego al objeto data la propiedad name
             data.name = req.body.name.toUpperCase();
