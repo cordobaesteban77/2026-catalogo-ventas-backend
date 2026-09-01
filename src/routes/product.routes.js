@@ -8,7 +8,7 @@ router.get("/", getProducts);
 router.get("/active", getActiveProducts);
 router.get("/disable", getDisableProducts);
 router.post("/createProduct", authenticate, createProduct);
-router.put("/updateProduct:id", updateProduct);
+router.put("/updateProduct:id", authenticate, updateProduct);
 router.put("/disableProduct:id", changeStateProduct);
 router.delete("/deleteProduct:id", deleteProduct);
 

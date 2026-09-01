@@ -58,8 +58,9 @@ const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const { price, category, description, stock } = req.body;
+        const user = req.user._id;
         // cuerpo que le mando a mongoose para que actualice la DB
-        let data = { price, category, description, stock };
+        let data = { price, category, description, stock, user };
         if (req.body.name) {
             // le agrego al objeto data la propiedad name
             data.name = req.body.name.toUpperCase();
