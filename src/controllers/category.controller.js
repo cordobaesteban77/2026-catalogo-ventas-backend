@@ -40,7 +40,8 @@ const updateCategory = async (req, res) => {
             return res.status(400).json({ ok: false, message: "Ya existe una categoria con ese nombre" });
         }
         // validar que el id exista en la base de datos
-        const data = { name: name.toUpperCase() };
+        const user = req.user._id;
+        const data = { name: name.toUpperCase(), user };
         const category = await Category.findByIdAndUpdate(id, data, { new: true });
         res.status(200).json({ ok: true, message: "Categoria actualizada", category });
     } catch (error) {

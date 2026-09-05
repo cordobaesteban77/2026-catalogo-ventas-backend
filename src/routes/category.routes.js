@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/", getCategory);
 router.post("/create", authenticate, createCategory);
-router.put("/update:id", updateCategory);
+router.put("/update:id", authenticate, updateCategory);
 router.put("/changreState:id", changeCategoryState);
 router.delete("/delete:id", deleteCategory)
 
