@@ -3,7 +3,7 @@ import Category from "../models/category.js";
 // obtener categorias
 const getCategory = async (req, res) => {
     try {
-        const categories = await Category.find();
+        const categories = await Category.find().populate("user", "username email");
         res.status(200).json({ categories });
     } catch (error) {
         console.log(error);
@@ -19,7 +19,8 @@ const createCategory = async (req, res) => {
         if (validateName) {
             res.status(400).json({ ok: false, message: `La categoría ${name} ya existe` });
         }
-        const category = new Category({ name });
+        const user = req.user._id;
+        const category = new Category({ name, user });
         category.save();
         res.status(201).json({ ok: true, message: `La categoria ${name} se creó con éxito` });
     } catch (error) {
@@ -39,7 +40,8 @@ const updateCategory = async (req, res) => {
             return res.status(400).json({ ok: false, message: "Ya existe una categoria con ese nombre" });
         }
         // validar que el id exista en la base de datos
-        const data = { name: name.toUpperCase() };
+        const user = req.user._id;
+        const data = { name: name.toUpperCase(), user };
         const category = await Category.findByIdAndUpdate(id, data, { new: true });
         res.status(200).json({ ok: true, message: "Categoria actualizada", category });
     } catch (error) {
