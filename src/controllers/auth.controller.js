@@ -134,4 +134,18 @@ const updateUser = async (req, res) => {
     }
 };
 
-export { register, verifyEmail, login, logout, getProfile, updateUser };
+const deleteUser = async (req, res) => {
+    try {
+        const { role } = req.user;
+        if (role === "superAdmin") {
+            const { id } = req.body;
+            await User.findByIdAndDelete(id);
+            return res.status(200).json({ ok: true, message: "Usuario eliminado con éxito" });
+        }
+        return res.status(403).json({ ok: false, message: "No tiene permiso para eliminiar un usuario" });
+    } catch (error) {
+        return res.status(500).json({ ok: false, error: error.message });
+    }
+};
+
+export { register, verifyEmail, login, logout, getProfile, updateUser, deleteUser };
