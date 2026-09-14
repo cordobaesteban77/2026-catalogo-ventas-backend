@@ -121,4 +121,17 @@ const logout = (req, res) => {
     }
 };
 
-export { register, verifyEmail, login, logout, getProfile };
+// actualizar usuario
+const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { username, email } = req.body;
+        let data = { username, email };
+        await User.findByIdAndUpdate(id, data);
+        res.status(200).json({ ok: true, message: "Usuario actualizado con éxito" });
+    } catch (error) {
+        return res.status(500).json({ ok: false, error: error.message });
+    }
+};
+
+export { register, verifyEmail, login, logout, getProfile, updateUser };
