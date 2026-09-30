@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteUser, getProfile, login, logout, register, updateUser, verifyEmail } from "../controllers/auth.controller.js";
+import { changeUserRole, deleteUser, generateVerificationCode, getProfile, login, logout, register, updateUser, verifyEmail } from "../controllers/auth.controller.js";
 import { authenticate } from "../middlewares/auth.js";
 
 const router = Router();
@@ -9,7 +9,9 @@ router.post("/verify", verifyEmail);
 router.get("/profile", authenticate, getProfile);
 router.post("/login", login);
 router.post("/logout", logout);
+router.post("/generateCode", generateVerificationCode);
 router.put("/update:id", authenticate, updateUser);
+router.put("/changeRole:id", authenticate, changeUserRole);
 router.delete("/delete", authenticate, deleteUser);
 
 export default router;
