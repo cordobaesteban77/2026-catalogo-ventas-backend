@@ -27,11 +27,11 @@ const register = async (req, res) => {
             console.error("Error al enviar el email", error);
         }
         // envio respuesta al cliente
-        res.status(201).json({ ok: true, message: "Usuario creado con éxito, por favor ahora revise su correo y verifique su usuario", data: { username: user.username, email: user.email } });
+        return res.status(201).json({ ok: true, message: "Usuario creado con éxito, por favor ahora revise su correo y verifique su usuario", data: { username: user.username, email: user.email } });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ ok: false, error: error.message });
+        return res.status(500).json({ ok: false, error: error.message });
     }
 };
 
@@ -148,7 +148,7 @@ const updateUser = async (req, res) => {
         const { username, email } = req.body;
         let data = { username, email };
         await User.findByIdAndUpdate(id, data);
-        res.status(200).json({ ok: true, message: "Usuario actualizado con éxito" });
+        return res.status(200).json({ ok: true, message: "Usuario actualizado con éxito" });
     } catch (error) {
         return res.status(500).json({ ok: false, error: error.message });
     }
