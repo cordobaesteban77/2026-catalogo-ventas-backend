@@ -27,11 +27,11 @@ const register = async (req, res) => {
             console.error("Error al enviar el email", error);
         }
         // envio respuesta al cliente
-        res.status(201).json({ ok: true, message: "Usuario creado con éxito, por favor ahora revise su correo y verifique su usuario", data: { username: user.username, email: user.email } });
+        return res.status(201).json({ ok: true, message: "Usuario creado con éxito, por favor ahora revise su correo y verifique su usuario", data: { username: user.username, email: user.email } });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ ok: false, error: error.message });
+        return res.status(500).json({ ok: false, error: error.message });
     }
 };
 
@@ -62,6 +62,26 @@ const verifyEmail = async (req, res) => {
         user.verificationCodeExpires = null;
         await user.save();
         return res.status(200).json({ ok: true, message: "Email verificado correectamente" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ ok: false, error: error.message });
+    }
+};
+
+// generar codigo de verificacion
+const generateVerificationCode = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        const { username } = user;
+        const verificationCode = user.generateVerificationCode();
+        await user.save();
+        try {
+            await sendVerificationEmail(email, username, verificationCode);
+        } catch (error) {
+            console.error("Error al enviar el email", error);
+        }
+        return res.status(200).json({ ok: true, message: "Código generado con éxito, revise su correo para verificarlo" });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ ok: false, error: error.message });
@@ -121,4 +141,48 @@ const logout = (req, res) => {
     }
 };
 
-export { register, verifyEmail, login, logout, getProfile };
+// actualizar usuario
+const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { username, email } = req.body;
+        let data = { username, email };
+        await User.findByIdAndUpdate(id, data);
+        return res.status(200).json({ ok: true, message: "Usuario actualizado con éxito" });
+    } catch (error) {
+        return res.status(500).json({ ok: false, error: error.message });
+    }
+};
+
+// cambiar rol de un usuario
+const changeUserRole = async (req, res) => {
+    try {
+        const { role } = req.user;
+        if (role === "superAdmin") {
+            const { id } = req.params;
+            const { role } = req.body;
+            let data = { role };
+            await User.findByIdAndUpdate(id, data);
+            return res.status(200).json({ ok: true, message: "Rol cambiado con éxito" });
+        }
+        return res.status(403).json({ ok: false, message: "No tiene permiso para cambiar el rol de un usuario" });
+    } catch (error) {
+        return res.status(500).json({ ok: false, error: error.message });
+    }
+};
+
+const deleteUser = async (req, res) => {
+    try {
+        const { role } = req.user;
+        if (role === "superAdmin") {
+            const { id } = req.body;
+            await User.findByIdAndDelete(id);
+            return res.status(200).json({ ok: true, message: "Usuario eliminado con éxito" });
+        }
+        return res.status(403).json({ ok: false, message: "No tiene permiso para eliminiar un usuario" });
+    } catch (error) {
+        return res.status(500).json({ ok: false, error: error.message });
+    }
+};
+
+export { register, verifyEmail, login, logout, getProfile, updateUser, deleteUser, changeUserRole, generateVerificationCode };
