@@ -73,6 +73,9 @@ const generateVerificationCode = async (req, res) => {
     try {
         const { email } = req.body;
         const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ ok: false, message: "Usuario no econtrado" });
+        }
         const { username } = user;
         const verificationCode = user.generateVerificationCode();
         await user.save();
